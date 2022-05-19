@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+  <record model="ir.actions.act_window" id="action_return_to_garage_from_client">
+    <field name="name">Return from Client</field>
+    <field name="res_model">rental.wizard.return_from_client</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="action_return_to_garage_from_maintenance">
+    <field name="name">Return from Maintenance</field>
+    <field name="res_model">rental.wizard.return_from_maintenance</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+  <record model="ir.ui.view" id="form_view_wizard_return_from_client">
+    <field name="name">Return from Client</field>
+    <field name="model">rental.wizard.return_from_client</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <group>
+              <field name="final_odometer_value"/>
+            </group>
+          </group>
+        </sheet>
+        <footer>
+          <button string="Confirm" name="action_return_car_to_garage_from_client" type="object" class="oe_highlight" data-hotkey="q"/>
+          <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record model="ir.ui.view" id="form_view_wizard_return_from_maintenance">
+    <field name="name">Return from Maintenance</field>
+    <field name="model">rental.wizard.return_from_maintenance</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <group>
+              <field name="description"/>
+            </group>
+          </group>
+        </sheet>
+        <footer>
+          <button string="Confirm" name="action_return_car_to_garage_from_maintenance" type="object" class="oe_highlight" data-hotkey="q"/>
+          <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,17 @@
+<odoo>
+    <menuitem id="car_rental_menu_root" name="Car Rental">
+        <menuitem id="car_rental_first_level_menu" name="Car Menu">
+            <menuitem id="display_all_cars_menu_action" action="display_all_cars_action"/>
+            <menuitem id="display_all_models_menu_action" action="display_all_models_action"/>
+            <menuitem id="display_available_cars_menu_action" action="display_available_cars_action"/>
+            <menuitem id="display_rented_cars_menu_action" action="display_rented_cars_action"/>
+            <menuitem id="display_fixed_cars_menu_action" action="display_fixed_cars_action"/>
+        </menuitem>
+        <menuitem name="Configurations" id="configurations" groups="rental.group_car_rental_manager">
+            <menuitem id="display_all_manufacturers_menu_action" action="display_all_manufacturers_action"/>
+        </menuitem>
+        <menuitem name="Reports" id="reports" groups="rental.group_car_rental_manager">
+            <menuitem name="Car reports" id="menu_car_reports" action="action_car_report"/>
+        </menuitem>
+    </menuitem>
+</odoo>

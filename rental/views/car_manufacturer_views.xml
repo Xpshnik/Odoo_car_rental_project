@@ -1,0 +1,55 @@
+<odoo>
+    <!-- Search -->
+    <record model="ir.ui.view" id="car_manufacturers_search_view">
+        <field name="name">car manufacturer search</field>
+        <field name="model">rental.car.manufacturer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Menu actions -->
+    <record model="ir.actions.act_window" id="display_all_manufacturers_action">
+            <field name="name">All manufacturers</field>
+            <field name="res_model">rental.car.manufacturer</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Tree views -->
+    <record id="car_rental_car_manufacturer_view_tree" model="ir.ui.view">
+        <field name="name">rental.car.manufacturer.tree</field>
+        <field name="model">rental.car.manufacturer</field>
+        <field name="arch" type="xml">
+            <tree string="Cars manufacturers list" class="o_rental_car_manufacturer_tree">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form views -->
+    <record model="ir.ui.view" id="car_rental_car_manufacturer_form_view">
+        <field name="name">rental.car.manufacturer.form.view</field>
+        <field name="model">rental.car.manufacturer</field>
+        <field name="arch" type="xml">
+            <form class="o_rental_car_manufacturer_form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="logo" widget="image" string=""/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>

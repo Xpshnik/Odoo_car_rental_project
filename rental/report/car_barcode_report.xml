@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_car_barcode" model="ir.actions.report">
+            <field name="name">Barcode</field>
+            <field name="model">rental.car</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">rental.report_car_barcode</field>
+            <field name="report_file">rental.car_barcode</field>
+            <field name="print_report_name">object.name</field>
+            <field name="binding_model_id" ref="model_rental_car"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

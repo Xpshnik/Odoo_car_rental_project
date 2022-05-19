@@ -1,0 +1,71 @@
+<odoo>
+    <data>
+        <!-- Car manufacturers -->
+        <record id="test_manufacturer_1" model="rental.car.manufacturer">
+            <field name="name">Tesla</field>
+            <field name="logo" type="base64" file="rental/static/img/tesla.jpg"/>
+        </record>
+        <record id="test_manufacturer_2" model="rental.car.manufacturer">
+            <field name="name">BMW</field>
+            <field name="logo" type="base64" file="rental/static/img/bmw.png"/>
+        </record>
+        <record id="test_manufacturer_3" model="rental.car.manufacturer">
+            <field name="name">Citroën</field>
+            <field name="logo" type="base64" file="rental/static/img/citroen.png"/>
+        </record>
+        <record id="test_manufacturer_4" model="rental.car.manufacturer">
+            <field name="name">Volvo</field>
+            <field name="logo" type="base64" file="rental/static/img/volvo.jpeg"/>
+        </record>
+
+        <!-- Car models -->
+        <record id="test_model_1" model="rental.car.model">
+            <field name="model_name">Model X</field>
+            <field name="manufacturer_id" ref="test_manufacturer_1"/>
+        </record>
+        <record id="test_model_2" model="rental.car.model">
+            <field name="model_name">BMW 750i G11 (2015-2019)</field>
+            <field name="manufacturer_id" ref="test_manufacturer_2"/>
+        </record>
+        <record id="test_model_3" model="rental.car.model">
+            <field name="model_name">Citroën C3</field>
+            <field name="manufacturer_id" ref="test_manufacturer_3"/>
+        </record>
+
+        <!-- Cars -->
+        <record id="car_1" model="rental.car">
+            <field name="model">Model X</field>
+            <field name="logo" type="base64" file="rental/static/img/tesla.jpg"/>
+            <field name="status">on_maintenance</field>
+            <field name="year" eval="2019"/>
+            <field name="odometer" eval="7446"/>
+            <field name="rentee_id" eval="False"/>
+            <field name="date_rented" eval="False"/>
+            <field name="rental_history_ids" eval="[(5, 0), (0, 0, {
+                'rentee_id': ref('base.res_partner_address_25'),
+                'date_rented': (DateTime.today() - relativedelta(months=1)).strftime('%Y-%m-%d'),
+                'date_returned': (DateTime.today() - relativedelta(days=26)).strftime('%Y-%m-%d'),
+                'initial_odometer_value': 7005,
+                'final_odometer_value': 7446
+            })]"/>
+        </record>
+
+        <record id="car_2" model="rental.car">
+            <field name="model">BMW 750i G11 (2015-2019)</field>
+            <field name="logo" type="base64" file="rental/static/img/bmw.png"/>
+            <field name="status">rented</field>
+            <field name="year" eval="2017"/>
+            <field name="odometer" eval="3045"/>
+            <field name="rentee_id" ref="base.res_partner_address_5"/>
+            <field name="date_rented" eval="(DateTime.today() - relativedelta(days=2)).strftime('%Y-%m-%d %H:%M')"/>
+            <field name="rental_history_ids" eval="[(5, 0), (0, 0, {
+                'rentee_id': ref('base.res_partner_address_5'),
+                'date_rented': (DateTime.today() - relativedelta(days=2)).strftime('%Y-%m-%d %H:%M'),
+                'date_returned': False,
+                'initial_odometer_value': 3045,
+                'final_odometer_value': False
+            })]"/>
+        </record>
+
+    </data>
+</odoo>

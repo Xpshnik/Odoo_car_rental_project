@@ -1,0 +1,135 @@
+<odoo>
+    <!-- explicit search view definition -->
+    <record model="ir.ui.view" id="car_search_view">
+        <field name="name">car search</field>
+        <field name="model">rental.car</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', '|', ('model', 'ilike', self), ('number', 'ilike', self), ('rentee_id', 'ilike', self)]"/>
+                <field name="rentee_id" string="Rentee"/>
+                <field name="year"/>
+                <field name="year" string="From year" filter_domain="[('year', '&gt;', self)]"/>
+                <field name="year" string="Before year" filter_domain="[('year', '&lt;', self)]"/>
+                <field name="odometer" string="Odometer value limit" filter_domain="[('odometer', '&gt;', self)]"/>
+                <filter name="active" string="Archive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="on_maintenance" string="On maintenance" domain="[('status','=', 'on_maintenance')]"/>
+                <filter name="rented" string="Rented" domain="[('status','=', 'rented')]"/>
+                <filter name="in_garage" string="In garage" domain="[('status','=', 'in_garage')]"/>
+                <filter name="group_by_status" string="Status" context="{'group_by':'status'}"/>
+                <filter name="group_by_year" string="Year" context="{'group_by':'year'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Menu actions -->
+    <record id="display_all_cars_action" model="ir.actions.act_window">
+        <field name="name">All cars</field>
+        <field name="res_model">rental.car</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+    </record>
+                    <!-- Currently not called anywhere. active_id doesn't exist if accessed through menu -->
+    <record id="display_clients_cars_action" model="ir.actions.act_window">
+        <field name="name">Client's cars</field>
+        <field name="res_model">rental.car</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+        <field name="context">{'search_default_rentee_id': active_id}</field>
+    </record>
+
+    <record id="display_available_cars_action" model="ir.actions.act_window">
+        <field name="name">Available cars</field>
+        <field name="res_model">rental.car</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+        <field name="context">{'search_default_in_garage': 1,}</field>
+    </record>
+
+    <record id="display_fixed_cars_action" model="ir.actions.act_window">
+        <field name="name">Cars on maintenance</field>
+        <field name="res_model">rental.car</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+        <field name="context">{'search_default_on_maintenance': 1,}</field>
+    </record>
+
+    <record id="display_rented_cars_action" model="ir.actions.act_window">
+        <field name="name">Rented cars</field>
+        <field name="res_model">rental.car</field>
+        <field name="view_mode">tree,form,kanban,pivot</field>
+        <field name="context">{'search_default_rented': 1,}</field>
+    </record>
+
+    <!-- tree view -->
+    <record id="car_rental_car_view_tree" model="ir.ui.view">
+        <field name="name">rental.car.tree</field>
+        <field name="model">rental.car</field>
+        <field name="arch" type="xml">
+            <tree string="Cars list">
+                <header>
+                    <button string="Print barcode" type="object" name="action_print_barcode"/>
+                </header>
+                <field name="name"/>
+                <field name="model"/>
+                <field name="number"/>
+                <field name="year"/>
+                <field name="status"/>
+                <field name="odometer"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- pivot view -->
+    <record id="car_rental_car_view_pivot" model="ir.ui.view">
+        <field name="name">rental.car.pivot</field>
+        <field name="model">rental.car</field>
+        <field name="arch" type="xml">
+            <pivot string="Cars pivot">
+                <field name="status" type="col"/>
+                <field name="model" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- form view -->
+    <record model="ir.ui.view" id="car_rental_car_form_view">
+        <field name="name">rental.car.form.view</field>
+        <field name="model">rental.car</field>
+        <field name="arch" type="xml">
+            <form>
+                <header groups="rental.group_car_rental_manager">
+                    <button string="Print barcode" type="object" name="action_print_barcode"/>
+                    <button name="action_pass_to_client" string="Pass to client" class="oe_highlight" type="object" attrs="{'invisible': [('status', 'in', ['rented', 'on_maintenance', 'unavailable'])]}"/>
+                    <button name="action_pass_for_maintenance" string="Pass for maintenance" class="oe_highlight" type="object" attrs="{'invisible': [('status', 'in', ['rented', 'on_maintenance'])]}"/>
+                    <button name="%(action_return_to_garage_from_client)d" string="Return to garage" class="oe_highlight" type="action" attrs="{'invisible': ['!', ('status', '=', 'rented')]}"/>
+                    <button name="%(action_return_to_garage_from_maintenance)d" string="Return to garage" class="oe_highlight" type="action" attrs="{'invisible': ['!', ('status', '=', 'on_maintenance')]}"/>
+                    <button string="Send return notification (1 day)" type="object" name="action_send_notification" context="{'days': 1}" attrs="{'invisible': ['!', ('status', '=', 'rented')]}"/>             
+                    <button string="Send return notification (5 days)" type="object" name="action_send_notification" context="{'days': 5}" attrs="{'invisible': ['!', ('status', '=', 'rented')]}"/>
+                    <field name="status" widget="statusbar" statusbar_visible="in_garage,rented,on_maintenance,unavailable"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Name (autogenerated)"/>
+                        <h1>
+                            <field class="o_text_overflow" name="name" attrs="{'invisible': ['|', ('model', '=', False), ('number', '=', False)]}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Info">
+                            <field name="model" widget="custom-component-wrapper"/> <!-- widget="my-custom-field" -->
+                            <field name="number" invisible="1"/>
+                            <field name="year"/>
+                            <field name="odometer"/>
+                        </group>
+                        <group string="Owner" groups="base.group_multi_company">
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- kanban view -->
+</odoo>

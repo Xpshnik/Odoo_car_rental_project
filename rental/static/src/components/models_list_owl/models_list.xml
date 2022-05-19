@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="rental.WrapperComponent" owl="1">
+        <div t-on-focusout="_onFocusoutCleanup" t-on-model-chosen="_setFieldToChosenModel">
+            <input type="text" t-on-input="_onInput"/>
+            <ModelsListComponent t-if="state.models.length" models="state.models" dataPointId="dataPointId"/>
+        </div>
+    </t>
+    <t t-name="rental.ModelsListComponent" owl="1">
+        <ul t-on-click="_onClickGetModelInfo" class="list-unstyled">
+            <li t-foreach="props.models" t-as="car_model" t-key="car_model_index">
+                <p t-esc="car_model['model_name']" t-att-data-id="car_model['id']"/>
+            </li>
+        </ul>
+    </t>
+</templates>

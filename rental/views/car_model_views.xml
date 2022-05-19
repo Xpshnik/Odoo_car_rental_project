@@ -1,0 +1,57 @@
+<odoo>
+    <!-- Search -->
+    <record model="ir.ui.view" id="car_models_search_view">
+        <field name="name">car models search</field>
+        <field name="model">rental.car.model</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="model_name"/>
+                <field name="manufacturer_id" string="Manufacturer"/>
+                <filter name="active" string="Archive" domain="[('active', '=', False)]"/>
+                <filter name="group_by_manufacturer" string="Manufacturer" context="{'group_by':'manufacturer_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Menu actions -->
+    <record model="ir.actions.act_window" id="display_all_models_action">
+            <field name="name">All models</field>
+            <field name="res_model">rental.car.model</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Tree views -->
+    <record id="car_rental_car_model_view_tree" model="ir.ui.view">
+        <field name="name">rental.car.model.tree</field>
+        <field name="model">rental.car.model</field>
+        <field name="arch" type="xml">
+            <tree string="Cars models list" class="o_rental_car_model_tree">
+                <field name="model_name"/>
+                <field name="manufacturer_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form views -->
+    <record model="ir.ui.view" id="car_rental_car_model_form_view">
+        <field name="name">rental.car.model.form.view</field>
+        <field name="model">rental.car.model</field>
+        <field name="arch" type="xml">
+            <form class="o_rental_car_model_form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="model_name" />
+                            <field name="manufacturer_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>

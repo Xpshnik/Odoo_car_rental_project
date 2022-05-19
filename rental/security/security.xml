@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.module.category" id="module_category_car_rental">
+        <field name="name">Car rental</field>
+    </record>
+
+    <record model="ir.module.category" id="module_category_car_rental_rental">
+        <field name="name">Rental</field>
+        <field name="parent_id" ref="module_category_car_rental"/>
+    </record>
+
+    <record id="group_car_rental_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_car_rental_rental"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_car_rental_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_car_rental_rental"/>
+        <field name="implied_ids" eval="[(4, ref('group_car_rental_user'))]"/>
+        <field name="users" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
+    </record>
+
+    <record model="ir.rule" id="rule_car_multicompany">
+        <field name="name">Car multicompany</field>
+        <field name="model_id" ref="model_rental_car"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<odoo>
+    <record id="action_car_report" model="ir.actions.act_window">
+        <field name="name">All Reports</field>
+        <field name="res_model">rental.car.report</field>
+        <field name="view_mode">pivot,graph</field>
+    </record>
+
+    <record id="car_rental_car_view_pivot_report" model="ir.ui.view">
+        <field name="name">rental.car.pivot.report</field>
+        <field name="model">rental.car.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Cars pivot">
+                <field name="car_model_name" type="col"/>
+                <field name="year" type="row"/>
+                <field name="max_year" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>

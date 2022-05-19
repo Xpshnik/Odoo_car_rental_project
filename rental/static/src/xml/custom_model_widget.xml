@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="custom_model_widget_template">
+        <div class="test_search_div">
+            <ul class="test_search_ul list-unstyled">
+                <li t-foreach="list_search" t-as="list_item" class="test_search_li">
+                    <p class="list_car_model" t-esc="list_item['model_name']" t-att-data-id="list_item['id']"/>
+                </li>
+            </ul>
+        </div>
+    </t>
+</templates>
